@@ -1,7 +1,7 @@
 {
   "name": "voltron-migrator",
   "version": "0.7.0",
-  "description": "A database migration utility, inspired by voodootikigod's migrator. A Voltron Framework component.",
+  "description": "Generate, execute, and roll back SQL migrations.",
   "bin": {
     "migrate": "./bin/migrate"
   },
@@ -30,5 +30,5 @@
     "mysql"
   ],
   "author": "Justin Reidy <jmreidy@rzrsharp.net>",
-  "license": "BSD"
+  "license": "MIT"
 }
