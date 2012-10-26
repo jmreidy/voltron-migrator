@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+var path = require('path');
+var argv = require('../lib/parser').argv;
+var Migrator = require('../lib/migrator');
+
+var config;
+if (argv.config) {
+  config = require(path.resolve(argv.config)).database;
+}
+else {
+  config = {};
+  ['database', 'port', 'host', 'type', 'user', 'password'].forEach(function (key) {
+    config[key] = argv[key];
+  });
+}
+
+var db;
+if (config.type) {
+  db = require('../lib/migrators/'+config.type)(config);
+}
+var migrationsPath = path.resolve(argv.migrations);
+var migrator = Migrator(db, migrationsPath);
+
+if (argv.generate) {
+  migrator.generateMigration(argv.generate);
+}
+else {
+  var suffix = argv.revert ? '_down' : '_up';
+  migrator.migrate(suffix)
+    .then(function () {
+      process.exit(1);
+    }, function (err) {
+      console.error(err);
+      process.exit(-1);
+    }).end();
+}
+
+
