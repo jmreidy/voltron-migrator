@@ -1,6 +1,6 @@
 {
   "name": "voltron-migrator",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Generate, execute, and roll back SQL migrations.",
   "bin": {
     "migrate": "./bin/migrate"
