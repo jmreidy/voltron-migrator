@@ -28,10 +28,10 @@ else {
   var suffix = argv.revert ? '_down' : '_up';
   migrator.migrate(suffix)
     .then(function () {
-      process.exit(1);
+      process.exit(0);
     }, function (err) {
       console.error(err);
-      process.exit(-1);
+      process.exit(1);
     }).done();
 }
 
