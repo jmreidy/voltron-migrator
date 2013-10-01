@@ -5,6 +5,7 @@ var helpers = require('./helpers');
 
 
 module.exports = function (type, client) {
+  var configPath = '/fixtures/'+type+'.config';
 
   helpers.prepareMigratorDir('./migrations');
 
@@ -16,16 +17,26 @@ module.exports = function (type, client) {
     client.end();
   });
 
+
   context('if a config file is provided', function () {
     var opts = [];
-    opts.push('--config', './test/fixtures/'+type+'.config');
+    opts.push('--config', './test'+configPath);
     itWorksAsExpected(opts, client);
   });
 
   context('if parameters are passed directly', function () {
     var opts = [];
-    opts.push('--type', type);
-    opts.push('--name', 'migrator_test', '--host', '127.0.0.1', '--port', '5432');
+    var config = require('.'+configPath);
+    Object.keys(config.database).forEach(function (key) {
+      //the postgres connection can mutate the config object
+      if (key === 'database') {
+        opts.push('--name', config.database[key]);
+      }
+      else {
+        opts.push('--'+key, config.database[key]);
+      }
+
+    });
     itWorksAsExpected(opts, client);
   });
 
