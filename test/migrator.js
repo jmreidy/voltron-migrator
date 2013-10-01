@@ -1,14 +1,12 @@
-var fs = require('fs');
 var globule = require('globule');
 var assert = require('assert');
-var exec = require('child_process').exec;
-var rimraf = require('rimraf');
 var Q = require('q');
+var helpers = require('./helpers');
 
 
 module.exports = function (type, client) {
 
-  prepareMigratorDir('./migrations');
+  helpers.prepareMigratorDir('./migrations');
 
   before(function () {
     client.connect();
@@ -60,12 +58,12 @@ function itWorksAsExpected (baseOpts, client) {
 
   context('if a custom migrations directory is provided', function () {
     var customMigrationDir = './tmp/customDir';
-    prepareMigratorDir(customMigrationDir);
+    helpers.prepareMigratorDir(customMigrationDir);
 
     it('stores the migrations in the specified directory', function (next) {
       opts.push('--migrations', customMigrationDir);
       opts.push('--generate', 'test-migration');
-      runMigrator(opts, function (err) {
+      helpers.runMigrator(opts, function (err) {
         if (err) { return next(err); }
         var migrations = globule.find('./tmp/customDir/*.sql');
 
@@ -81,7 +79,7 @@ function itWorksAsExpected (baseOpts, client) {
   it('generates migrations for the provided label', function (next) {
     var label = 'foo';
     opts.push('--generate', label);
-    runMigrator(opts, function (err) {
+    helpers.runMigrator(opts, function (err) {
       if (err) { return next(err); }
 
       assert(globule.find('./migratons/*_'+label+'_up.sql'));
@@ -96,14 +94,14 @@ function itWorksAsExpected (baseOpts, client) {
       var migrations = globule.find('./test/fixtures/*.sql');
       Q.all(migrations.map(function (sql) {
         var name = sql.match(/\/(\w|_)+.sql$/)[0];
-        return copyFile(sql, './migrations/'+name);
+        return helpers.copyFile(sql, './migrations/'+name);
       })).fin(done);
     });
 
     describe('the default action', function () {
 
       it('runs all new up migrations', function (next) {
-        runMigrator(opts, function (err) {
+        helpers.runMigrator(opts, function (err) {
           if (err) { return next(err); }
           client.query('SELECT name FROM test;', function (err, result) {
             if (err) { return next(err); }
@@ -115,7 +113,7 @@ function itWorksAsExpected (baseOpts, client) {
       });
 
       it('creates a migrations table', function (next) {
-        runMigrator(opts, function (err) {
+        helpers.runMigrator(opts, function (err) {
           if (err) { return next(err); }
 
           client.query(
@@ -134,11 +132,11 @@ function itWorksAsExpected (baseOpts, client) {
     describe('if revert is passed', function () {
       it('reverts all migrations', function (next) {
 
-        runMigrator(opts, function (err) {
+        helpers.runMigrator(opts, function (err) {
           if (err) { return next(err); }
           opts.push('--revert');
 
-          runMigrator(opts, function (err) {
+          helpers.runMigrator(opts, function (err) {
             if (err) { return next(err); }
             client.query(
               'SELECT * FROM information_schema.tables WHERE table_schema = \'public\';',
@@ -160,43 +158,3 @@ function itWorksAsExpected (baseOpts, client) {
   });
 }
 
-function prepareMigratorDir (migrationDir) {
-  before(function (done) {
-    rimraf(migrationDir, function (err) {
-      done(err);
-    });
-  });
-
-  beforeEach(function () {
-    fs.mkdirSync(migrationDir);
-  });
-
-  afterEach(function (done) {
-    rimraf(migrationDir, function (err) { done(err); });
-  });
-}
-
-function runMigrator (opts, cb) {
-  exec('./bin/migrate ' + opts.join(' '), function (err, stdout, stedd) {
-    cb(err);
-  });
-}
-
-function copyFile(source, target) {
-  var token = Q.defer();
-
-  var rd = fs.createReadStream(source);
-  rd.on("error", function(err) {
-    token.reject(err);
-  });
-  var wr = fs.createWriteStream(target);
-  wr.on("error", function(err) {
-    token.reject(err);
-  });
-  wr.on("close", function(ex) {
-    token.resolve();
-  });
-  rd.pipe(wr);
-
-  return token.promise;
-}

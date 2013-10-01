@@ -6,7 +6,7 @@ var config = {
 };
 
 if (process.env.NODE_ENV === 'ci') {
-  database.user = 'Postgres';
+  config.user = 'Postgres';
 }
 
 module.exports = { database: config };
