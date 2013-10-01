@@ -3,6 +3,6 @@ node_js:
   - "0.10"
   - "0.8"
 before_script:
-  - psql -c 'create database migrator-test;' -U postgres
+  - psql -c 'create database migrator_test;' -U postgres
 env:
   - NODE_ENV=ci

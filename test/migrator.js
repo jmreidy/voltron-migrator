@@ -27,7 +27,7 @@ module.exports = function (type, client) {
   context('if parameters are passed directly', function () {
     var opts = [];
     opts.push('--type', type);
-    opts.push('--name', 'migrator-test', '--host', '127.0.0.1', '--port', '5432');
+    opts.push('--name', 'migrator_test', '--host', '127.0.0.1', '--port', '5432');
     itWorksAsExpected(opts, client);
   });
 
