@@ -7,7 +7,6 @@ var Q = require('q');
 
 
 module.exports = function (type, client) {
-  var opts = [];
 
   prepareMigratorDir('./migrations');
 
@@ -20,13 +19,15 @@ module.exports = function (type, client) {
   });
 
   context('if a config file is provided', function () {
+    var opts = [];
     opts.push('--config', './test/fixtures/'+type+'.config.json');
     itWorksAsExpected(opts, client);
   });
 
   context('if parameters are passed directly', function () {
+    var opts = [];
     opts.push('--type', type);
-    opts.push('--database', 'test-db', '--host', '127.0.0.1', '--port');
+    opts.push('--name', 'migrator-test', '--host', '127.0.0.1', '--port', '5432');
     itWorksAsExpected(opts, client);
   });
 
@@ -126,6 +127,8 @@ function itWorksAsExpected (baseOpts, client) {
             });
         });
       });
+
+      it('does not execute already-completed migrations');
     });
 
     describe('if revert is passed', function () {
@@ -147,7 +150,10 @@ function itWorksAsExpected (baseOpts, client) {
           });
 
         });
+      });
 
+      context('if limit is passed', function () {
+        it('only reverts migrations up to the limit count');
       });
 
     });

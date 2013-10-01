@@ -9,7 +9,7 @@ if (argv.config) {
 }
 else {
   config = {};
-  ['database', 'port', 'host', 'type', 'user', 'password'].forEach(function (key) {
+  ['name', 'port', 'host', 'type', 'user', 'password'].forEach(function (key) {
     config[key] = argv[key];
   });
 }
@@ -26,7 +26,6 @@ if (argv.generate) {
 }
 else {
   var suffix = argv.revert ? '_down' : '_up';
-  console.log(suffix);
   migrator.migrate(suffix)
     .then(function () {
       process.exit(0);
