@@ -26,6 +26,7 @@ if (argv.generate) {
 }
 else {
   var suffix = argv.revert ? '_down' : '_up';
+  console.log(suffix);
   migrator.migrate(suffix)
     .then(function () {
       process.exit(0);

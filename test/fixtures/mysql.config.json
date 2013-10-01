@@ -1,0 +1,10 @@
+{
+  "database": {
+    "database": "migrator_test",
+    "host": "127.0.0.1",
+    "port": "3306",
+    "type": "mysql",
+    "user": "migrator",
+    "password": "migrator"
+  }
+}
