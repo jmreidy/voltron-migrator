@@ -1,4 +1,4 @@
-var config = require('./fixtures/postgres.config.json').database;
+var config = require('./fixtures/postgres.config').database;
 var Client = require('pg').Client;
 var runsAsExpected = require('./migrator.js');
 

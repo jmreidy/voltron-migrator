@@ -20,7 +20,7 @@ module.exports = function (type, client) {
 
   context('if a config file is provided', function () {
     var opts = [];
-    opts.push('--config', './test/fixtures/'+type+'.config.json');
+    opts.push('--config', './test/fixtures/'+type+'.config');
     itWorksAsExpected(opts, client);
   });
 
