@@ -24,11 +24,11 @@ provide database configuration in two ways:
 
 1. via a configuration file that will be required. The config file must
 return an object with a `database` property, which itself exposes a hash
-of the following properties: database, host, port, type, user (optional),
+of the following properties: name, host, port, type, user (optional),
 password (optional).
 
 2. via explicit values on the command line. The following properties
-are required: database, host, port, type. User and password are optional.
+are required: name, host, port, type. User and password are optional.
 
 V-M assumes that your migrations are included in `.\migrations`, but you
 can change that via a CLI argument.
@@ -51,13 +51,17 @@ Postgres and MySQL are currently supported.
 ## Roadmap
 
 * Add test coverage
-* Add sqlite support
 * Allow reversion by step
 * Allow reversion by datestamp
 
+## Development
+In order to run the tests, you'll need to setup a database for both Postgres
+(`migrator-test`) and MySQL (`migrator_test`). See the config files in
+`test/fixtures` for details.
+
 ## License
 The MIT License (MIT)
-Copyright © 2012 Justin Reidy, http://rzrsharp.net
+Copyright © 2012-3 Justin Reidy, http://rzrsharp.net
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal
