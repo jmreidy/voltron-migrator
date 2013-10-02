@@ -1,4 +1,5 @@
 var rimraf = require('rimraf');
+var mkdirp = require('mkdirp');
 var fs = require('fs');
 var exec = require('child_process').exec;
 var Q = require('q');
@@ -11,8 +12,10 @@ module.exports = {
       });
     });
 
-    beforeEach(function () {
-      fs.mkdirSync(migrationDir);
+    beforeEach(function (next) {
+      mkdirp(migrationDir, function (err) {
+        next(err);
+      });
     });
 
     afterEach(function (done) {
