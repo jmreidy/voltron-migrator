@@ -104,7 +104,7 @@ function itWorksAsExpected (baseOpts, client) {
     beforeEach(function (done) {
       var migrations = globule.find('./test/fixtures/*.sql');
       Q.all(migrations.map(function (sql) {
-        var name = sql.match(/\/(\w|_)+.sql$/)[0];
+        var name = sql.match(/\/(\w|-|\.)+.sql$/)[0];
         return helpers.copyFile(sql, './migrations/'+name);
       })).fin(done);
     });
@@ -116,7 +116,7 @@ function itWorksAsExpected (baseOpts, client) {
           if (err) { return next(err); }
           client.query('SELECT name FROM test;', function (err, result) {
             if (err) { return next(err); }
-            assert.ok(result.rows.length === 1);
+            assert.ok(result.rows.length === 2);
             assert.ok(result.rows[0].name === 'foo');
             next();
           });

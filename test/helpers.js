@@ -24,7 +24,7 @@ module.exports = {
   },
 
   runMigrator: function (opts, cb) {
-    exec('./bin/migrate ' + opts.join(' '), function (err, stdout, stedd) {
+    exec('./bin/migrate ' + opts.join(' '), function (err, stdout, stderr) {
       cb(err);
     });
   },
