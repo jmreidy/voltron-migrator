@@ -57,8 +57,7 @@ Postgres and MySQL are currently supported.
 * Allow reversion by datestamp
 
 ## Development
-In order to run the tests, you'll need to setup a database for both Postgres
-(`migrator-test`) and MySQL (`migrator_test`). See the config files in
+In order to run the tests, you'll need to setup a database (`migrator_test`) for both Postgres and MySQL. See the config files in
 `test/fixtures` for details.
 
 ## License
