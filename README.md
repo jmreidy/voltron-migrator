@@ -4,9 +4,8 @@
 
 Voltron-Migrator is a tool for executing SQL migrations with Node. While it's
 part of the Voltron.io framework, it's also a stand-alone component.
-Voltron-Migrator is heavily modeled after
-[voodootikigod's migrator](http://github.com/voodootikigod/migrator); in fact,
-the project started as a fork of voodootikigod's code.
+Voltron-Migrator is heavily modeled after [voodootikigod's migrator](http://github.com/voodootikigod/migrator); 
+in fact, the project started as a fork of voodootikigod's code.
 
 ## Purpose
 
