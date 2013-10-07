@@ -4,7 +4,7 @@
 
 Voltron-Migrator is a tool for executing SQL migrations with Node. While it's
 part of the Voltron.io framework, it's also a stand-alone component.
-Voltron-Migrator is heavily modeled after [voodootikigod's migrator](http://github.com/voodootikigod/migrator); 
+Voltron-Migrator is heavily modeled after [voodootikigod's migrator](http://github.com/voodootikigod/migrator);
 in fact, the project started as a fork of voodootikigod's code.
 
 ## Purpose
@@ -52,12 +52,13 @@ Postgres and MySQL are currently supported.
 ## Roadmap
 
 * Add test coverage
+* Implement MySQL
 * Allow reversion by step
 * Allow reversion by datestamp
 
 ## Development
-In order to run the tests, you'll need to setup a database (`migrator_test`) for both Postgres and MySQL. See the config files in
-`test/fixtures` for details.
+In order to run the tests, you'll need to setup a database for Postgres
+(`migrator_test`). See the config files in `test/fixtures` for details.
 
 ## License
 The MIT License (MIT)
