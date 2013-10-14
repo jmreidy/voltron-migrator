@@ -137,34 +137,57 @@ function itWorksAsExpected (baseOpts, client) {
         });
       });
 
-      it('does not execute already-completed migrations');
-    });
-
-    describe('if revert is passed', function () {
-      it('reverts all migrations', function (next) {
-
+      it('does not execute already-completed migrations', function (next) {
         helpers.runMigrator(opts, function (err) {
           if (err) { return next(err); }
-          opts.push('--revert');
 
+          client.query('SELECT name FROM test;', function (err, result) {
+            if (err) { return next(err); }
+            assert.ok(result.rows.length === 2);
+            next();
+          });
+        });
+      });
+    });
+
+    context('after migrations have been run', function () {
+      beforeEach(function (next) {
+        helpers.runMigrator(opts, function (err) {
+          if (err) { return next(err); }
+          next();
+        });
+      });
+
+      describe('if revert is passed', function () {
+        it('reverts all migrations', function (next) {
+          opts.push('--revert');
           helpers.runMigrator(opts, function (err) {
             if (err) { return next(err); }
             client.query(
               'SELECT * FROM information_schema.tables WHERE table_schema = \'public\';',
               function (err, result) {
                 if (err) { return next(err); }
-                assert.ok(result.rows.length == 1);
+                //only schema migrations table should exist
+                assert.ok(result.rows.length === 1);
                 next();
               });
           });
-
         });
       });
 
-      context('if limit is passed', function () {
-        it('only reverts migrations up to the limit count');
+      describe('if limit is passed', function () {
+        it('only reverts migrations up to the limit count', function (next) {
+          opts.push('--revert', '--limit', '1');
+          helpers.runMigrator(opts, function (err) {
+            if (err) { return next(err); }
+            client.query('SELECT name FROM test;', function (err, result) {
+              if (err) { return next(err); }
+              assert.ok(result.rows.length === 1);
+              next();
+            });
+          });
+        });
       });
-
     });
   });
 }

@@ -47,13 +47,12 @@ are executed, and `down` files are run when migrations are reverted.
 
 ## Support
 
-Postgres and MySQL are currently supported.
+Postgres is currently supported.
 
 ## Roadmap
 
 * Add test coverage
 * Implement MySQL
-* Allow reversion by step
 * Allow reversion by datestamp
 
 ## Development
